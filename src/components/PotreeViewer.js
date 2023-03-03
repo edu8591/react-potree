@@ -16,7 +16,7 @@ function PotreeViewer({ pointcloudPath, pointcloudName, description }) {
     viewer.loadSettingsFromURL();
     viewer.setBackground("skybox");
     viewer.setDescription(description);
-    viewer.setControls(viewer.earthControls);
+    // viewer.setControls(viewer.earthControls);
 
     viewer.loadGUI(() => {
       viewer.setLanguage("es");
