@@ -2,19 +2,15 @@ import React, { useRef, useEffect, Fragment } from "react";
 import "../../public/libs/potree/potree.css";
 
 function PotreeViewer({ pointcloudPath, pointcloudName, description }) {
-  // pointcloudPath debe ser la direccion del metadata.json (debe haber tambien un hierarchy.bin y octree.bin en el mismo directorio )
-  // pointcloudName nombre a dar al modelo, se puede omitir
-
   const potreeRenderArea = useRef();
-  const potreeSidebarContainer = useRef();
-
   useEffect(() => {
     window.viewer = new Potree.Viewer(potreeRenderArea.current);
+
     viewer.setEDLEnabled(false);
     viewer.setFOV(75);
     viewer.setPointBudget(1_000_000);
     viewer.loadSettingsFromURL();
-    viewer.setBackground("skybox");
+    viewer.setBackground("black"); // ["skybox", "gradient", "black", "white"];
     viewer.setDescription(description);
     // viewer.setControls(viewer.earthControls);
 
@@ -35,24 +31,27 @@ function PotreeViewer({ pointcloudPath, pointcloudName, description }) {
       viewer.toggleSidebar();
     });
 
-    Potree.loadPointCloud(pointcloudPath, pointcloudName, (e) => {
-      console.log(e.pointcloud.material);
-      let scene = viewer.scene;
-      let pointcloud = e.pointcloud;
-      let material = pointcloud.material;
-      material.size = 1;
-      material.pointSizeType = Potree.PointSizeType.ADAPTIVE;
-      // material.activeAttributeName = "rgba";
-      material.shape = Potree.PointShape.SQUARE;
-      scene.addPointCloud(pointcloud);
+    Potree.loadPointCloud(
+      "pointclouds/R99997/cloud.js",
+      pointcloudName,
+      (e) => {
+        let scene = viewer.scene;
+        let pointcloud = e.pointcloud;
+        let material = pointcloud.material;
+        material.size = 1;
+        material.pointSizeType = Potree.PointSizeType.ADAPTIVE;
+        // material.activeAttributeName = "rgba";
+        material.shape = Potree.PointShape.SQUARE;
+        scene.addPointCloud(pointcloud);
 
-      viewer.fitToScreen();
-    });
+        viewer.fitToScreen();
+      }
+    );
   }, []);
   return (
     <Fragment>
       <div id="potree_render_area" ref={potreeRenderArea}></div>
-      <div id="potree_sidebar_container" ref={potreeSidebarContainer}></div>
+      <div id="potree_sidebar_container"></div>
     </Fragment>
   );
 }

@@ -18,7 +18,7 @@ function App() {
       }}
     >
       <PotreeViewer
-        pointcloudPath={"./pointclouds/test/metadata.json"}
+        pointcloudPath={"./pointclouds/lion_takanawa/cloud.js"}
         pointcloudName={"test"}
         description={"esto es una prueba"}
       />
